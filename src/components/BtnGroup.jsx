@@ -1,34 +1,55 @@
 import React from "react";
 import cn from "classnames";
 
-class BtnGroup extends React.Component{
+class BtnGroup extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      status: 'inert'
+      statusLeft: 'inert',
+      statusRight: 'inert'
     }
-    };
+  };
 
-  handleClick = () => {
-    this.setState({status: 'active'})
+  handleClick = (side) => () => {
+    if (side === 'left'){
+      this.setState({
+        statusLeft: true,
+        statusRight: false,
+      })
+    }
+
+    if (side === 'right'){
+      this.setState({
+        statusLeft: false,
+        statusRight: true,
+      })
+    }
   }
+
+  handleClickLeft = this.handleClick('left');
+  handleClickRight = this.handleClick('right');
+
 
 
   render() {
-    const statusOfBtn = cn(' btn-secondary',{
-      'active' : this.state.status === 'active',
-      'inert': this.state.status === 'inert'
+    const statusOfLeftBtn = cn('btn btn-secondary', {
+      'left': true,
+      'active': this.state.statusLeft
     })
 
-    return(
+    const statusOfRightBtn = cn('btn btn-secondary',{
+      'right': true,
+      'active': this.state.statusRight
+    })
+
+    return (
       <div className="btn-group" role="group">
-        <button onClick={this.handleClick} type="button" className={statusOfBtn + ' left'}>Left</button>
-        <button onClick={this.handleClick} type="button" className={statusOfBtn + ' right'}>Right</button>
+        <button type="button" className={statusOfLeftBtn} onClick={this.handleClickLeft}>Left</button>
+        <button type="button" className={statusOfRightBtn} onClick={this.handleClickRight}>Right</button>
       </div>
     )
   }
 }
-
 
 
 export default BtnGroup;
